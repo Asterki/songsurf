@@ -11,7 +11,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 const Home = () => {
     return (
         <div
-            className={`${montserrat}  bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
+            className={`${montserrat} bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
         >
             <NavbarComponent />
 

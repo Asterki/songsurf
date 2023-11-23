@@ -32,7 +32,7 @@ class Filter:
             # Energy
             & (self.songs["energy"] >= energy - energy_range)
             & (self.songs["energy"] <= energy + energy_range)
-            # Instrumentalness (Inline condition, if true, will set all above 0.5, if not, below 0.5)
+            # Instrumentalness
             & (
                 self.songs["instrumentalness"] > 0
                 if instrumental
