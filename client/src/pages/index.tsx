@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 import { Montserrat } from "next/font/google";
 
@@ -10,19 +11,26 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 const Home = () => {
     return (
         <div
-            className={`${montserrat}  bg-gradient-to-br from-[#1D1D1D] to-[#121212] min-h-screen text-white`}
+            className={`${montserrat}  bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
         >
             <NavbarComponent />
 
+            <Head>
+                <title>SongSurf</title>
+            </Head>
+
             <header className="text-center p-16">
                 <h1 className="text-[60px] font-bold">SongSurf</h1>
-                <p>Dive into a sea of personalized playlists and discover a harmonious journey through your favorite genres and artists.</p>
+                <p>
+                    Dive into a sea of personalized playlists and discover a
+                    harmonious journey through your favorite genres and artists.
+                </p>
             </header>
 
             <main className="text-center">
                 <Link
                     href="/search"
-                    className="w-1/12 py-4 px-8 rounded-2xl bg-[#1DB954] transition-all text-white font-bold text-[20px]"
+                    className="w-1/12 py-4 px-8 rounded-2xl bg-primary transition-all text-white font-bold text-[20px]"
                 >
                     Get Started
                 </Link>
@@ -78,7 +86,7 @@ const Home = () => {
                             target="_blank"
                             referrerPolicy="no-referrer"
                             href="https://github.com/Asterki/flashet"
-                            className="text-[#1DB954] hover:underline"
+                            className="text-primary hover:underline"
                         >
                             here
                         </a>
