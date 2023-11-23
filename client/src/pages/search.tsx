@@ -12,15 +12,9 @@ import NavbarComponent from "@/components/navbar";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 const SearchPage = () => {
-    const router = useRouter();
     const genreOptions = ["edm", "latin", "pop", "rock", "rap", "r&b"];
     const subGenreOptions = {
-        edm: [
-            "big room",
-            "electro house",
-            "progressive electro house",
-            "pop edm",
-        ],
+        edm: ["big room", "electro house", "progressive electro house", "pop edm"],
         latin: ["latin hip hop", "latin pop", "reggaeton", "tropical"],
         pop: ["dance pop", "electropop", "indie poptimism", "post-teen pop"],
         rock: ["album rock", "classic rock", "hard rock", "permanent wave"],
@@ -31,13 +25,10 @@ const SearchPage = () => {
     type GenreOptions = "edm" | "latin" | "pop" | "rock" | "rap" | "r&b";
     type SubGenreOptions = string;
 
-    const [selectedGenre, setSelectedGenre] =
-        React.useState<GenreOptions>("edm");
-    const [selectedSubGenre, setSelectedSubGenre] =
-        React.useState<SubGenreOptions>("");
+    const [selectedGenre, setSelectedGenre] = React.useState<GenreOptions>("edm");
+    const [selectedSubGenre, setSelectedSubGenre] = React.useState<SubGenreOptions>("");
 
-    const [danceabilitySliderValue, setDanceabilitySliderValue] =
-        React.useState(50);
+    const [danceabilitySliderValue, setDanceabilitySliderValue] = React.useState(50);
     const [energySliderValue, setEnergySliderValue] = React.useState(50);
     const [happySliderValue, setHappySliderValue] = React.useState(50);
 
@@ -49,7 +40,7 @@ const SearchPage = () => {
     const sendRequest = async () => {
         const res = await axios({
             method: "POST",
-            url: "http://127.0.0.1:5000/api/search",
+            url: `${process.env.NEXT_PUBLIC_ALGORITHM_URL}/api/search`,
             data: {
                 genre: selectedGenre,
                 subgenre: selectedSubGenre,
@@ -67,9 +58,7 @@ const SearchPage = () => {
     };
 
     return (
-        <div
-            className={`${montserrat}  bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
-        >
+        <div className={`${montserrat}  bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}>
             <NavbarComponent />
 
             <Head>
@@ -82,9 +71,7 @@ const SearchPage = () => {
 
                     {songResults.length === 0 && (
                         <div className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between">
-                            <h1 className="text-lg font-bold">
-                                No results found
-                            </h1>
+                            <h1 className="text-lg font-bold">No results found</h1>
                         </div>
                     )}
 
@@ -107,36 +94,30 @@ const SearchPage = () => {
                                     >
                                         <div className="flex items-center justify-between w-full">
                                             <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
-                                                <h1 className="text-lg font-bold">
-                                                    {song.track_name}
-                                                </h1>
-                                                <h2 className="text-lg text-gray-400">
-                                                    {song.track_artist}
-                                                </h2>
+                                                <h1 className="text-lg font-bold">{song.track_name}</h1>
+                                                <h2 className="text-lg text-gray-400">{song.track_artist}</h2>
 
                                                 <Link
                                                     className="text-primary hover:underline"
                                                     href={`https://open.spotify.com/track/${song.track_id}`}
+                                                    referrerPolicy="no-referrer"
+                                                    target="_blank"
                                                 >
                                                     Open Track
                                                 </Link>
                                             </div>
 
                                             <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
-                                                <h1 className="text-lg">
-                                                    Album:{" "}
-                                                    {song.track_album_name}
-                                                </h1>
+                                                <h1 className="text-lg">Album: {song.track_album_name}</h1>
                                                 <h2 className="text-lg text-gray-400">
-                                                    Released:{" "}
-                                                    {
-                                                        song.track_album_release_date
-                                                    }
+                                                    Released: {song.track_album_release_date}
                                                 </h2>
 
                                                 <Link
                                                     className="text-primary hover:underline"
                                                     href={`https://open.spotify.com/album/${song.track_album_id}`}
+                                                    referrerPolicy="no-referrer"
+                                                    target="_blank"
                                                 >
                                                     Open Albumn
                                                 </Link>
@@ -144,12 +125,12 @@ const SearchPage = () => {
                                         </div>
 
                                         <p className="mt-4 text-gray-400">
-                                            This song is categorized as{" "}
-                                            {song.playlist_subgenre}, subgenre
-                                            of{" "}
+                                            This song is categorized as {song.playlist_subgenre}, subgenre of{" "}
                                             <Link
                                                 className="text-primary hover:underline"
                                                 href={`/genre/${song.playlist_genre}`}
+                                                referrerPolicy="no-referrer"
+                                                target="_blank"
                                             >
                                                 {song.playlist_genre}
                                             </Link>
@@ -170,9 +151,7 @@ const SearchPage = () => {
 
                         <select
                             onChange={(event) => {
-                                setSelectedGenre(
-                                    event.target.value as GenreOptions
-                                );
+                                setSelectedGenre(event.target.value as GenreOptions);
                             }}
                             className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
                         >
@@ -181,8 +160,7 @@ const SearchPage = () => {
                             </option>
                             {genreOptions.map((genre) => (
                                 <option value={genre} key={genre}>
-                                    {genre.charAt(0).toUpperCase() +
-                                        genre.slice(1)}
+                                    {genre.charAt(0).toUpperCase() + genre.slice(1)}
                                 </option>
                             ))}
                         </select>
@@ -202,17 +180,14 @@ const SearchPage = () => {
                             </option>
                             {subGenreOptions[selectedGenre].map((subgenre) => (
                                 <option value={subgenre} key={subgenre}>
-                                    {subgenre.charAt(0).toUpperCase() +
-                                        subgenre.slice(1)}
+                                    {subgenre.charAt(0).toUpperCase() + subgenre.slice(1)}
                                 </option>
                             ))}
                         </select>
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">
-                            Song energy: {energySliderValue}%
-                        </h1>
+                        <h1 className="text-2xl">Song energy: {energySliderValue}%</h1>
 
                         <input
                             type="range"
@@ -220,26 +195,20 @@ const SearchPage = () => {
                             max="100"
                             defaultValue={energySliderValue}
                             onChange={(event) => {
-                                setEnergySliderValue(
-                                    parseInt(event.target.value, 10) || 0
-                                );
+                                setEnergySliderValue(parseInt(event.target.value, 10) || 0);
                             }}
                             id="slider"
                             className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
                             style={{
                                 backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
                                     (energySliderValue / 100) * 100
-                                }%, #121212 ${
-                                    (energySliderValue / 100) * 100
-                                }%, #121212 100%)`,
+                                }%, #121212 ${(energySliderValue / 100) * 100}%, #121212 100%)`,
                             }}
                         />
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">
-                            Song Danceability: {danceabilitySliderValue}%
-                        </h1>
+                        <h1 className="text-2xl">Song Danceability: {danceabilitySliderValue}%</h1>
 
                         <input
                             type="range"
@@ -247,45 +216,35 @@ const SearchPage = () => {
                             max="100"
                             defaultValue={danceabilitySliderValue}
                             onChange={(event) => {
-                                setDanceabilitySliderValue(
-                                    parseInt(event.target.value, 10) || 0
-                                );
+                                setDanceabilitySliderValue(parseInt(event.target.value, 10) || 0);
                             }}
                             id="slider"
                             className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
                             style={{
                                 backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
                                     (danceabilitySliderValue / 100) * 100
-                                }%, #121212 ${
-                                    (danceabilitySliderValue / 100) * 100
-                                }%, #121212 100%)`,
+                                }%, #121212 ${(danceabilitySliderValue / 100) * 100}%, #121212 100%)`,
                             }}
                         />
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">
-                            Song Happiness: {happySliderValue}%
-                        </h1>
+                        <h1 className="text-2xl">Song Happiness: {happySliderValue}%</h1>
 
                         <input
                             type="range"
                             min="1"
                             max="100"
-                            defaultValue={danceabilitySliderValue}
+                            defaultValue={happySliderValue}
                             onChange={(event) => {
-                                setHappySliderValue(
-                                    parseInt(event.target.value, 10) || 0
-                                );
+                                setHappySliderValue(parseInt(event.target.value, 10) || 0);
                             }}
                             id="slider"
                             className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
                             style={{
                                 backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
                                     (happySliderValue / 100) * 100
-                                }%, #121212 ${
-                                    (happySliderValue / 100) * 100
-                                }%, #121212 100%)`,
+                                }%, #121212 ${(happySliderValue / 100) * 100}%, #121212 100%)`,
                             }}
                         />
                     </div>
