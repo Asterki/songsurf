@@ -1,7 +1,9 @@
 import * as React from "react";
 import Head from "next/head";
-
 import axios from "axios";
+import Link from "next/link";
+
+import { useRouter } from "next/router";
 
 import { Montserrat } from "next/font/google";
 
@@ -10,23 +12,7 @@ import NavbarComponent from "@/components/navbar";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 const SearchPage = () => {
-    const sendRequest = async () => {
-        const res = await axios({
-            method: "POST",
-            url: "http://127.0.0.1:5000/api/search",
-            data: {
-                genre: selectedGenre,
-                subgenre: selectedSubGenre,
-                danceability: danceabilitySliderValue,
-                energy: energySliderValue,
-                happy: happySliderValue,
-                instrumental: instrumental,
-            },
-        });
-
-        console.log(res.data);
-    };
-
+    const router = useRouter();
     const genreOptions = ["edm", "latin", "pop", "rock", "rap", "r&b"];
     const subGenreOptions = {
         edm: [
@@ -57,6 +43,29 @@ const SearchPage = () => {
 
     const [instrumental, setInstrumental] = React.useState(false);
 
+    const [songResults, setSongsResults] = React.useState([]);
+    const [showingResults, setShowingResults] = React.useState(false);
+
+    const sendRequest = async () => {
+        const res = await axios({
+            method: "POST",
+            url: "http://127.0.0.1:5000/api/search",
+            data: {
+                genre: selectedGenre,
+                subgenre: selectedSubGenre,
+                danceability: danceabilitySliderValue,
+                energy: energySliderValue,
+                valence: happySliderValue,
+                instrumental: instrumental,
+            },
+        });
+
+        console.log(res.data);
+
+        setShowingResults(true);
+        setSongsResults(res.data);
+    };
+
     return (
         <div
             className={`${montserrat}  bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
@@ -67,156 +76,245 @@ const SearchPage = () => {
                 <title>SongSurf | Search</title>
             </Head>
 
-            <main className="flex flex-col items-center justify-center w-full flex-1 mt-12">
-                <h1 className="text-5xl font-bold">Search</h1>
+            {showingResults && (
+                <main className="flex flex-col items-center justify-center w-full mt-12">
+                    <h1 className="text-5xl font-bold">Results</h1>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">Select a genre</h1>
+                    {songResults.length === 0 && (
+                        <div className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between">
+                            <h1 className="text-lg font-bold">
+                                No results found
+                            </h1>
+                        </div>
+                    )}
 
-                    <select
-                        onChange={(event) => {
-                            setSelectedGenre(
-                                event.target.value as GenreOptions
-                            );
+                    <button
+                        className="my-16 bg-primary text-white appearance-none outline-none w-1/2 p-2 rounded-2xl"
+                        onClick={() => {
+                            setShowingResults(false);
                         }}
-                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
                     >
-                        <option value="" disabled selected>
-                            Select a genre
-                        </option>
-                        {genreOptions.map((genre) => (
-                            <option value={genre} key={genre}>
-                                {genre.charAt(0).toUpperCase() + genre.slice(1)}
+                        Search Again
+                    </button>
+
+                    <div className="flex items-center justify-around w-full flex-wrap">
+                        {songResults.length > 0 &&
+                            songResults.map((song: any) => {
+                                return (
+                                    <div
+                                        key={song.track_id}
+                                        className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between"
+                                    >
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
+                                                <h1 className="text-lg font-bold">
+                                                    {song.track_name}
+                                                </h1>
+                                                <h2 className="text-lg text-gray-400">
+                                                    {song.track_artist}
+                                                </h2>
+
+                                                <Link
+                                                    className="text-primary hover:underline"
+                                                    href={`https://open.spotify.com/track/${song.track_id}`}
+                                                >
+                                                    Open Track
+                                                </Link>
+                                            </div>
+
+                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
+                                                <h1 className="text-lg">
+                                                    Album:{" "}
+                                                    {song.track_album_name}
+                                                </h1>
+                                                <h2 className="text-lg text-gray-400">
+                                                    Released:{" "}
+                                                    {
+                                                        song.track_album_release_date
+                                                    }
+                                                </h2>
+
+                                                <Link
+                                                    className="text-primary hover:underline"
+                                                    href={`https://open.spotify.com/album/${song.track_album_id}`}
+                                                >
+                                                    Open Albumn
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        <p className="mt-4 text-gray-400">
+                                            This song is categorized as{" "}
+                                            {song.playlist_subgenre}, subgenre
+                                            of{" "}
+                                            <Link
+                                                className="text-primary hover:underline"
+                                                href={`/genre/${song.playlist_genre}`}
+                                            >
+                                                {song.playlist_genre}
+                                            </Link>
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                    </div>
+                </main>
+            )}
+
+            {!showingResults && (
+                <main className="flex flex-col items-center justify-center w-full flex-1 mt-12">
+                    <h1 className="text-5xl font-bold">Search</h1>
+
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">Select a genre</h1>
+
+                        <select
+                            onChange={(event) => {
+                                setSelectedGenre(
+                                    event.target.value as GenreOptions
+                                );
+                            }}
+                            className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                        >
+                            <option value="" disabled selected>
+                                Select a genre
                             </option>
-                        ))}
-                    </select>
-                </div>
+                            {genreOptions.map((genre) => (
+                                <option value={genre} key={genre}>
+                                    {genre.charAt(0).toUpperCase() +
+                                        genre.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">Select a subgenre</h1>
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">Select a subgenre</h1>
 
-                    <select
-                        onChange={(event) => {
-                            setSelectedSubGenre(event.target.value);
-                        }}
-                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md">
-                        <option value="" disabled selected>
-                            Select a subgenre
-                        </option>
-                        {subGenreOptions[selectedGenre].map((subgenre) => (
-                            <option value={subgenre} key={subgenre}>
-                                {subgenre.charAt(0).toUpperCase() +
-                                    subgenre.slice(1)}
+                        <select
+                            onChange={(event) => {
+                                setSelectedSubGenre(event.target.value);
+                            }}
+                            className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                        >
+                            <option value="" disabled selected>
+                                Select a subgenre
                             </option>
-                        ))}
-                    </select>
-                </div>
+                            {subGenreOptions[selectedGenre].map((subgenre) => (
+                                <option value={subgenre} key={subgenre}>
+                                    {subgenre.charAt(0).toUpperCase() +
+                                        subgenre.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">
-                        Song energy: {energySliderValue}%
-                    </h1>
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">
+                            Song energy: {energySliderValue}%
+                        </h1>
 
-                    <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        defaultValue={energySliderValue}
-                        onChange={(event) => {
-                            setEnergySliderValue(
-                                parseInt(event.target.value, 10) || 0
-                            );
-                        }}
-                        id="slider"
-                        className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
-                        style={{
-                            backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
-                                (energySliderValue / 100) * 100
-                            }%, #121212 ${
-                                (energySliderValue / 100) * 100
-                            }%, #121212 100%)`,
-                        }}
-                    />
-                </div>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            defaultValue={energySliderValue}
+                            onChange={(event) => {
+                                setEnergySliderValue(
+                                    parseInt(event.target.value, 10) || 0
+                                );
+                            }}
+                            id="slider"
+                            className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
+                            style={{
+                                backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
+                                    (energySliderValue / 100) * 100
+                                }%, #121212 ${
+                                    (energySliderValue / 100) * 100
+                                }%, #121212 100%)`,
+                            }}
+                        />
+                    </div>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">
-                        Song Danceability: {danceabilitySliderValue}%
-                    </h1>
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">
+                            Song Danceability: {danceabilitySliderValue}%
+                        </h1>
 
-                    <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        defaultValue={danceabilitySliderValue}
-                        onChange={(event) => {
-                            setDanceabilitySliderValue(
-                                parseInt(event.target.value, 10) || 0
-                            );
-                        }}
-                        id="slider"
-                        className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
-                        style={{
-                            backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
-                                (danceabilitySliderValue / 100) * 100
-                            }%, #121212 ${
-                                (danceabilitySliderValue / 100) * 100
-                            }%, #121212 100%)`,
-                        }}
-                    />
-                </div>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            defaultValue={danceabilitySliderValue}
+                            onChange={(event) => {
+                                setDanceabilitySliderValue(
+                                    parseInt(event.target.value, 10) || 0
+                                );
+                            }}
+                            id="slider"
+                            className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
+                            style={{
+                                backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
+                                    (danceabilitySliderValue / 100) * 100
+                                }%, #121212 ${
+                                    (danceabilitySliderValue / 100) * 100
+                                }%, #121212 100%)`,
+                            }}
+                        />
+                    </div>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">
-                        Song Happiness: {happySliderValue}%
-                    </h1>
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">
+                            Song Happiness: {happySliderValue}%
+                        </h1>
 
-                    <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        defaultValue={danceabilitySliderValue}
-                        onChange={(event) => {
-                            setHappySliderValue(
-                                parseInt(event.target.value, 10) || 0
-                            );
-                        }}
-                        id="slider"
-                        className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
-                        style={{
-                            backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
-                                (happySliderValue / 100) * 100
-                            }%, #121212 ${
-                                (happySliderValue / 100) * 100
-                            }%, #121212 100%)`,
-                        }}
-                    />
-                </div>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            defaultValue={danceabilitySliderValue}
+                            onChange={(event) => {
+                                setHappySliderValue(
+                                    parseInt(event.target.value, 10) || 0
+                                );
+                            }}
+                            id="slider"
+                            className="mt-4 appearance-none w-full h-2 rounded-md bg-dark-tone-3 outline-none"
+                            style={{
+                                backgroundImage: `linear-gradient(to right, #1DB954 0%, #1DB954 ${
+                                    (happySliderValue / 100) * 100
+                                }%, #121212 ${
+                                    (happySliderValue / 100) * 100
+                                }%, #121212 100%)`,
+                            }}
+                        />
+                    </div>
 
-                <div className="w-1/2 mt-8">
-                    <h1 className="text-2xl font-bold">Instrumental:</h1>
+                    <div className="w-1/2 mt-8">
+                        <h1 className="text-2xl">Instrumental:</h1>
 
-                    <select
-                        onChange={(event) => {
-                            setInstrumental(event.target.value === "Yes");
-                        }}
-                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                        <select
+                            onChange={(event) => {
+                                setInstrumental(event.target.value === "Yes");
+                            }}
+                            className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                        >
+                            <option value="" disabled selected>
+                                Select an option
+                            </option>
+                            <option value="genre1">Yes</option>
+                            <option value="genre2">No</option>
+                        </select>
+                    </div>
+
+                    <button
+                        className="my-16 bg-primary text-white appearance-none outline-none w-1/2 p-2 rounded-2xl"
+                        onClick={sendRequest}
                     >
-                        <option value="" disabled selected>
-                            Select an option
-                        </option>
-                        <option value="genre1">Yes</option>
-                        <option value="genre2">No</option>
-                    </select>
-                </div>
-
-                <button
-                    className="my-16 bg-primary text-white appearance-none outline-none w-1/2 p-2 rounded-2xl"
-                    onClick={sendRequest}
-                >
-                    Search
-                </button>
-            </main>
+                        Search
+                    </button>
+                </main>
+            )}
         </div>
     );
 };
