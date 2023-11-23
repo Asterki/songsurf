@@ -4,7 +4,8 @@ SongSurf is a music recommendation app designed to ride the waves of your musica
 
 ## Table of contents
 - [Table of contents](#table-of-contents)
-- [Installation](#installation)
+- [Requirements](#requirements)
+- [Environment variables](#environment-variables)
 - [Run Locally](#run-locally)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
@@ -12,29 +13,34 @@ SongSurf is a music recommendation app designed to ride the waves of your musica
 - [Authors](#authors)
 
 
-## Installation
+## Requirements
+- Node.js v20.9.0^
+- Python 3.10.12^
+- NPM 10.2.4^
+- PiP 22.0.2^
 
-Install my-project with npm
 
-```bash
-  npm install my-project
-  cd my-project
+## Environment variables
+*/client/.env.local*
 ```
-
+NEXT_PUBLIC_ALGORITHM_URL=""
+```
 
 
 ## Run Locally
 
+*Note: You have to set the .env variables before running the client server*
+
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/Asterki/songsurf
 ```
 
-Go to the project directory
+Go to the project's client
 
 ```bash
-  cd my-project
+  cd songsurf/client
 ```
 
 Install dependencies
@@ -46,13 +52,33 @@ Install dependencies
 Start the server
 
 ```bash
-  npm run start
+  npm run dev
+```
+
+Go to the project's algorithm
+
+```bash
+  cd songsurf/algorithm
+```
+
+Install dependencies
+
+```bash
+  pip install -r requirements.txt
+```
+
+Start the server
+
+```bash
+  python3 src/index.py
 ```
 
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://i.imgur.com/U4kFblr.png)
+![App Screenshot](https://i.imgur.com/3bLazs2.png)
+![App Screenshot](https://i.imgur.com/hEwlUJJ.png)
 
 
 ## Contributing

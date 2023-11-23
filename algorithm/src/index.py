@@ -5,8 +5,6 @@ import pandas as pd
 app = Flask(__name__)
 cors = CORS(app)
 
-app.config["CORS_HEADERS"] = "Content-Type"
-
 
 # Range values for each criterion
 valence_range = 0.05

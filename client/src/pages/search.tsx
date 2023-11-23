@@ -41,6 +41,7 @@ const SearchPage = () => {
         const res = await axios({
             method: "POST",
             url: `${process.env.NEXT_PUBLIC_ALGORITHM_URL}/api/search`,
+            
             data: {
                 genre: selectedGenre,
                 subgenre: selectedSubGenre,
