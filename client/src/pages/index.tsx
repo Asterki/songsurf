@@ -16,7 +16,7 @@ const Home = () => {
 
             <header className="text-center p-16">
                 <h1 className="text-[60px] font-bold">SongSurf</h1>
-                <p>Find new music</p>
+                <p>Dive into a sea of personalized playlists and discover a harmonious journey through your favorite genres and artists.</p>
             </header>
 
             <main className="text-center">
