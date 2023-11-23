@@ -1,7 +1,4 @@
 import * as React from "react";
-
-import Image from "next/image";
-import Link from "next/link";
 import Head from "next/head";
 
 import axios from "axios";
@@ -14,16 +11,49 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 const SearchPage = () => {
     const sendRequest = async () => {
-        const res = await axios.get("/api/search");
-        console.log(res);
+        const res = await axios({
+            method: "POST",
+            url: "/api/search",
+            data: {
+                genre: selectedGenre,
+                subgenre: selectedSubGenre,
+                danceability: danceabilitySliderValue,
+                energy: energySliderValue,
+                happy: happySliderValue,
+                instrumental: instrumental,
+            },
+        });
     };
+
+    const genreOptions = ["edm", "latin", "pop", "rock", "rap", "r&b"];
+    const subGenreOptions = {
+        edm: [
+            "big room",
+            "electro house",
+            "progressive electro house",
+            "pop edm",
+        ],
+        latin: ["latin hip hop", "latin pop", "reggaeton", "tropical"],
+        pop: ["dance pop", "electropop", "indie poptimism", "post-teen pop"],
+        rock: ["album rock", "classic rock", "hard rock", "permanent wave"],
+        rap: ["gangster rap", "hip hop", "southern hip hop", "trap"],
+        "r&b": ["hip hop", "neo soul", "new jack swing", "urban contemporary"],
+    };
+
+    type GenreOptions = "edm" | "latin" | "pop" | "rock" | "rap" | "r&b";
+    type SubGenreOptions = string;
+
+    const [selectedGenre, setSelectedGenre] =
+        React.useState<GenreOptions>("edm");
+    const [selectedSubGenre, setSelectedSubGenre] =
+        React.useState<SubGenreOptions>("");
 
     const [danceabilitySliderValue, setDanceabilitySliderValue] =
         React.useState(50);
     const [energySliderValue, setEnergySliderValue] = React.useState(50);
     const [happySliderValue, setHappySliderValue] = React.useState(50);
 
-    const genreOptions = [];
+    const [instrumental, setInstrumental] = React.useState(false);
 
     return (
         <div
@@ -41,13 +71,22 @@ const SearchPage = () => {
                 <div className="w-1/2 mt-8">
                     <h1 className="text-2xl font-bold">Select a genre</h1>
 
-                    <select className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md">
+                    <select
+                        onChange={(event) => {
+                            setSelectedGenre(
+                                event.target.value as GenreOptions
+                            );
+                        }}
+                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                    >
                         <option value="" disabled selected>
                             Select a genre
                         </option>
-                        <option value="genre1">Rock</option>
-                        <option value="genre2">Genre 2</option>
-                        <option value="genre3">Genre 3</option>
+                        {genreOptions.map((genre) => (
+                            <option value={genre} key={genre}>
+                                {genre.charAt(0).toUpperCase() + genre.slice(1)}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
@@ -58,9 +97,12 @@ const SearchPage = () => {
                         <option value="" disabled selected>
                             Select a subgenre
                         </option>
-                        <option value="genre1">Heavy Rock</option>
-                        <option value="genre2">Genre 2</option>
-                        <option value="genre3">Genre 3</option>
+                        {subGenreOptions[selectedGenre].map((subgenre) => (
+                            <option value={subgenre} key={subgenre}>
+                                {subgenre.charAt(0).toUpperCase() +
+                                    subgenre.slice(1)}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
@@ -148,7 +190,12 @@ const SearchPage = () => {
                 <div className="w-1/2 mt-8">
                     <h1 className="text-2xl font-bold">Instrumental:</h1>
 
-                    <select className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md">
+                    <select
+                        onChange={(event) => {
+                            setInstrumental(event.target.value === "Yes");
+                        }}
+                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
+                    >
                         <option value="" disabled selected>
                             Select an option
                         </option>
