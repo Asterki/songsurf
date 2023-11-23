@@ -13,7 +13,7 @@ const SearchPage = () => {
     const sendRequest = async () => {
         const res = await axios({
             method: "POST",
-            url: "/api/search",
+            url: "http://127.0.0.1:5000/api/search",
             data: {
                 genre: selectedGenre,
                 subgenre: selectedSubGenre,
@@ -23,6 +23,8 @@ const SearchPage = () => {
                 instrumental: instrumental,
             },
         });
+
+        console.log(res.data);
     };
 
     const genreOptions = ["edm", "latin", "pop", "rock", "rap", "r&b"];
@@ -93,7 +95,11 @@ const SearchPage = () => {
                 <div className="w-1/2 mt-8">
                     <h1 className="text-2xl font-bold">Select a subgenre</h1>
 
-                    <select className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md">
+                    <select
+                        onChange={(event) => {
+                            setSelectedSubGenre(event.target.value);
+                        }}
+                        className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md">
                         <option value="" disabled selected>
                             Select a subgenre
                         </option>
