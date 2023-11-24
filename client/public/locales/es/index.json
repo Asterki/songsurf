@@ -1,0 +1,33 @@
+{
+    "pageTitle": "SongSurf",
+    "pageDesc": "Sumérgete en un mar de listas de reproducción personalizadas y descubre un viaje armónico a través de tus géneros y artistas favoritos.",
+
+    "getStarted": "Comenzar",
+
+    "sections": {
+        "howWorks": {
+            "title": "Cómo funciona",
+            "desc": "SongSurf es una aplicación web que te permite crear una lista de reproducción personalizada basada en tus artistas y géneros favoritos. Utiliza la API de Spotify para obtener tus artistas y géneros favoritos, y luego utiliza el SDK de reproducción web de Spotify para reproducir las canciones. También utiliza la API web de Spotify para obtener las canciones y crear la lista de reproducción.",
+            "text1": "SongSurf es una aplicación web que te permite descubrir nueva música en una enorme base de datos de canciones de Spotify.",
+            "text2": "Puedes agregar filtros a tu gusto para encontrar la canción perfecta para ti. Puedes filtrar por género, año y popularidad.",
+            "text3": "Utiliza inteligencia artificial para encontrar canciones que coincidan con los filtros que has seleccionado."
+        },
+        "howToUse": {
+            "title": "Cómo usar",
+            "text1": "Para hacer esto, primero debes ir a la página de búsqueda y luego agregar filtros a tu gusto.",
+            "text2": "Una vez que hayas agregado filtros, haz clic en el botón de búsqueda para buscar canciones.",
+            "text3": "SongSurf hará el resto."
+        },
+        "privacy": {
+            "title": "Privacidad",
+            "text1": "SongSurf no almacena ninguno de tus datos. Solo utiliza los datos que proporcionas para buscar canciones.",
+            "text2": "Después de que se utilizó para buscar canciones, se elimina de nuestro servidor.",
+            "text3": "De hecho, puedes revisar el código fuente tú mismo."
+        },
+        "openSource": {
+            "title": "Código abierto",
+            "text1": "SongSurf es de código abierto. Puedes ver el código fuente",
+            "text2": "aquí."
+        }
+    }
+}

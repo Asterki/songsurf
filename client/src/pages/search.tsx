@@ -105,7 +105,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                                         className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between"
                                     >
                                         <div className="flex items-center justify-between w-full">
-                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
+                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1 text-center">
                                                 <h1 className="text-lg font-bold">{song.track_name}</h1>
                                                 <h2 className="text-lg text-gray-400">{song.track_artist}</h2>
 
@@ -119,7 +119,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                                                 </Link>
                                             </div>
 
-                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
+                                            <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1 text-center">
                                                 <h1 className="text-lg">Album: {song.track_album_name}</h1>
                                                 <h2 className="text-lg text-gray-400">
                                                     {t("search:results.released")}: {song.track_album_release_date}

@@ -1,0 +1,28 @@
+{
+    "pageTitle": "SongSurf | Búsqueda",
+    "results": {
+        "title": "Resultados",
+        "noResults": "No se encontraron resultados",
+        "searchAgain": "Buscar de nuevo",
+        "openTrack": "Abrir Pista",
+        "released": "Lanzado",
+        "openAlbum": "Abrir Álbum",
+        "cat": {
+            "text1": "Esta canción está categorizada como",
+            "text2": "subgénero de"
+        }
+    },
+    "search": {
+        "title": "Buscar",
+        "selectGenre": "Seleccionar Género",
+        "selectSubGenre": "Seleccionar Subgénero",
+        "songEnergy": "Energía de la Canción",
+        "songDanceability": "Bailable de la Canción",
+        "songHappiness": "Felicidad de la Canción",
+        "instrumental": "Instrumental",
+        "selectOption": "Seleccionar una opción",
+        "yes": "Sí",
+        "no": "No",
+        "search": "Buscar"
+    }
+}
