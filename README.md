@@ -1,4 +1,4 @@
-![Logo](./other/banner.png)
+![Logo](https://i.imgur.com/TlubhwN.png)
 
 SongSurf is a music recommendation app designed to ride the waves of your musical preferences. Dive into a sea of personalized playlists and discover a harmonious journey through your favorite genres and artists. 
 
@@ -29,49 +29,8 @@ NEXT_PUBLIC_ALGORITHM_URL=""
 
 ## Run Locally
 
-*Note: You have to set the .env variables before running the client server*
+Please refer to each folder's README.md file
 
-Clone the project
-
-```bash
-  git clone https://github.com/Asterki/songsurf
-```
-
-Go to the project's client
-
-```bash
-  cd songsurf/client
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run dev
-```
-
-Go to the project's algorithm
-
-```bash
-  cd songsurf/algorithm
-```
-
-Install dependencies
-
-```bash
-  pip install -r requirements.txt
-```
-
-Start the server
-
-```bash
-  python3 src/index.py
-```
 
 
 ## Screenshots

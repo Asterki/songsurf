@@ -1,18 +1,15 @@
-import Image from "next/image";
+import * as React from "react";
+
 import Link from "next/link";
 import Head from "next/head";
-
-import { Montserrat } from "next/font/google";
-
 import NavbarComponent from "@/components/navbar";
 
+import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 const Home = () => {
     return (
-        <div
-            className={`${montserrat} bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}
-        >
+        <div className={`${montserrat} bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}>
             <NavbarComponent />
 
             <Head>
@@ -22,8 +19,8 @@ const Home = () => {
             <header className="text-center p-16">
                 <h1 className="text-[60px] font-bold">SongSurf</h1>
                 <p>
-                    Dive into a sea of personalized playlists and discover a
-                    harmonious journey through your favorite genres and artists.
+                    Dive into a sea of personalized playlists and discover a harmonious journey through your favorite
+                    genres and artists.
                 </p>
             </header>
 
@@ -38,43 +35,31 @@ const Home = () => {
                 <section className="text-center p-16">
                     <h2 className="text-[40px] font-bold">How it works</h2>
                     <p>
-                        SongSurf is a web app that allows you to discover new
-                        music a huge database of songs from Spotify.
+                        SongSurf is a web app that allows you to discover new music a huge database of songs from
+                        Spotify.
                     </p>
                     <p>
-                        You can add filters to your likings to find the perfect
-                        song for you. You can filter by genre, year, and
-                        popularity.
+                        You can add filters to your likings to find the perfect song for you. You can filter by genre,
+                        year, and popularity.
                     </p>
                     <p>
-                        It uses artificial intelligence to find songs that
-                        matches with the filters you have selected.
+                        It uses artificial intelligence to find songs that matches with the filters you have selected.
                     </p>
                 </section>
 
                 <section className="text-center p-16">
                     <h2 className="text-[40px] font-bold">How to use</h2>
-                    <p>
-                        To do this, you first have to head to the search page,
-                        then add filters to your likings.
-                    </p>
-                    <p>
-                        Once you have added filters, click on the search button
-                        to search for songs.
-                    </p>
+                    <p>To do this, you first have to head to the search page, then add filters to your likings.</p>
+                    <p>Once you have added filters, click on the search button to search for songs.</p>
                     <p>SongSurf will do the rest</p>
                 </section>
 
                 <section className="text-center p-16">
                     <h2 className="text-[40px] font-bold">Privacy</h2>
                     <p>
-                        SongSurf does not store any of your data. It only uses
-                        the data you provide to search for songs.
+                        SongSurf does not store any of your data. It only uses the data you provide to search for songs.
                     </p>
-                    <p>
-                        After it was used to search for songs, it is deleted
-                        from our server.
-                    </p>
+                    <p>After it was used to search for songs, it is deleted from our server.</p>
                     <p>In fact, you can check the source code yourself.</p>
                 </section>
 

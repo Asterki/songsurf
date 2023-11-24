@@ -1,14 +1,11 @@
 import * as React from "react";
-import Head from "next/head";
 import axios from "axios";
+
+import Head from "next/head";
 import Link from "next/link";
-
-import { useRouter } from "next/router";
-
-import { Montserrat } from "next/font/google";
-
 import NavbarComponent from "@/components/navbar";
 
+import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 const SearchPage = () => {
@@ -22,40 +19,44 @@ const SearchPage = () => {
         "r&b": ["hip hop", "neo soul", "new jack swing", "urban contemporary"],
     };
 
+    // Types for the forms
     type GenreOptions = "edm" | "latin" | "pop" | "rock" | "rap" | "r&b";
     type SubGenreOptions = string;
 
+    // Values for the forms
     const [selectedGenre, setSelectedGenre] = React.useState<GenreOptions>("edm");
-    const [selectedSubGenre, setSelectedSubGenre] = React.useState<SubGenreOptions>("");
-
+    const [selectedSubGenre, setSelectedSubGenre] = React.useState<SubGenreOptions>("electro house");
     const [danceabilitySliderValue, setDanceabilitySliderValue] = React.useState(50);
     const [energySliderValue, setEnergySliderValue] = React.useState(50);
     const [happySliderValue, setHappySliderValue] = React.useState(50);
-
     const [instrumental, setInstrumental] = React.useState(false);
 
+    // Results
     const [songResults, setSongsResults] = React.useState([]);
     const [showingResults, setShowingResults] = React.useState(false);
 
     const sendRequest = async () => {
-        const res = await axios({
-            method: "POST",
-            url: `${process.env.NEXT_PUBLIC_ALGORITHM_URL}/api/search`,
-            
-            data: {
-                genre: selectedGenre,
-                subgenre: selectedSubGenre,
-                danceability: danceabilitySliderValue,
-                energy: energySliderValue,
-                valence: happySliderValue,
-                instrumental: instrumental,
-            },
-        });
+        try {
+            const res = await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_ALGORITHM_URL}/api/search`,
 
-        console.log(res.data);
+                data: {
+                    genre: selectedGenre,
+                    subgenre: selectedSubGenre,
+                    danceability: danceabilitySliderValue,
+                    energy: energySliderValue,
+                    valence: happySliderValue,
+                    instrumental: instrumental,
+                },
+            });
 
-        setShowingResults(true);
-        setSongsResults(res.data);
+            setShowingResults(true);
+            setSongsResults(res.data);
+        } catch (err) {
+            alert("An error occurred while searching for songs");
+            console.log(err);
+        }
     };
 
     return (
