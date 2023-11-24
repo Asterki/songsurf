@@ -49,15 +49,10 @@ class SongFilter:
             # Energy
             & (self.songs["energy"] >= energy - self.energy_range)
             & (self.songs["energy"] <= energy + self.energy_range)
-            # Instrumentalness
-            & (
-                self.songs["instrumentalness"] > 0
-                if instrumental
-                else self.songs["instrumentalness"] == 0
-            )
-            # Genre
-            & (self.songs["playlist_genre"] == genre)
-            & (self.songs["playlist_subgenre"] == subgenre)
+
+            & (self.songs["instrumentalness"] == 0 if instrumental else self.songs["instrumentalness"] > 0)
+            & (self.songs["playlist_genre"] == genre if genre != "other" else True)
+            & (self.songs["playlist_subgenre"] == subgenre if subgenre != "other" else True)
         ]
 
         return filtered_songs
@@ -66,23 +61,39 @@ class SongFilter:
 song_filter = SongFilter(valence_range=0.1, danceability_range=0.1, energy_range=0.1, songs=songs)
 
 
-@app.route("/api/get-song-info", methods=["POST"], strict_slashes=False, endpoint="search")
+@app.route("/api/get-song-info", methods=["POST"], strict_slashes=False, endpoint="get_song_info")
 @cross_origin()
-def search():
+def get_song_info():
     # Check the request values
     data = request.get_json(force=True)
     if not data:
         return jsonify({"error": "Empty request"}), 400
 
-    required_keys = ["song_url"]
+    required_keys = ["song_name"]
     if not all(key in data for key in required_keys):
         return jsonify({"error": "Missing required key(s) in request"}), 400
 
+    result = sp.search(data["song_name"], limit=1, type="track")
+    track = result['tracks']['items'][0]
+    audio_features = sp.audio_features(track['id'])[0]
 
-    song_info = sp.audio_features(data["song_url"])[0]
+    genres = sp.artist(track["artists"][0]["external_urls"]["spotify"])["genres"]
+    supportedGenres = ["edm", "latin", "pop", "rock", "rap", "r&b"]
+
+    genre = None
+    for g in genres:
+        for s in supportedGenres:
+            if s in g:
+                genre = s
+                break
+
 
     # Get the songs and return them
-    return jsonify(song_info)
+    return jsonify({
+        "audio_features": audio_features,
+        "song_data": track,
+        "genre": genre if genre else "other"
+    })
 
 
 @app.route("/api/search", methods=["POST"], strict_slashes=False, endpoint="search")
@@ -98,6 +109,7 @@ def search():
         return jsonify({"error": "Missing required key(s) in request"}), 400
 
 
+
     filter_params = {
         "valence": data["valence"] / 100,
         "danceability": data["danceability"] / 100,
@@ -107,8 +119,12 @@ def search():
         "subgenre": data["subgenre"],
     }
 
+    print(filter_params)
+
     # Get the songs and return them
     filtered_songs = song_filter.filter(**filter_params)
+    filtered_songs = filtered_songs.sample(n=100)
+
     return jsonify(filtered_songs.to_dict(orient="records"))
 
 
