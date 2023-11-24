@@ -1,0 +1,33 @@
+{
+    "pageTitle": "SongSurf",
+    "pageDesc": "Dive into a sea of personalized playlists and discover a harmonious journey through your favorite genres and artists.",
+
+    "getStarted": "Get Started",
+
+    "sections": {
+        "howWorks": {
+            "title": "How it works",
+            "desc": "SongSurf is a web app that allows you to create a personalized playlist based on your favorite artists and genres. It uses the Spotify API to fetch your favorite artists and genres, and then uses the Spotify Web Playback SDK to play the songs. It also uses the Spotify Web API to fetch the songs and create the playlist.",
+            "text1": "SongSurf is a web app that allows you to discover new music a huge database of songs from Spotify.",
+            "text2": "You can add filters to your likings to find the perfect song for you. You can filter by genre, year, and popularity.",
+            "text3": "It uses artificial intelligence to find songs that matches with the filters you have selected."
+        },
+        "howToUse": {
+            "title": "How to use",
+            "text1": "To do this, you first have to head to the search page, then add filters to your likings.",
+            "text2": "Once you have added filters, click on the search button to search for songs.",
+            "text3": "SongSurf will do the rest."
+        },
+        "privacy": {
+            "title": "Privacy",
+            "text1": "SongSurf does not store any of your data. It only uses the data you provide to search for songs.",
+            "text2": "After it was used to search for songs, it is deleted from our server.",
+            "text3": "In fact, you can check the source code yourself."
+        },
+        "openSource": {
+            "title": "Open Source",
+            "text1": "SongSurf is open source. You can view the source code",
+            "text2": "here."
+        }
+    }
+}

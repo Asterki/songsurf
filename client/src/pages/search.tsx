@@ -1,5 +1,8 @@
 import * as React from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -8,7 +11,14 @@ import NavbarComponent from "@/components/navbar";
 import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
-const SearchPage = () => {
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+
+interface PageProps {}
+
+const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const router = useRouter();
+    const { t } = useTranslation(["search", "components/navbar"]);
+
     const genreOptions = ["edm", "latin", "pop", "rock", "rap", "r&b"];
     const subGenreOptions = {
         edm: ["big room", "electro house", "progressive electro house", "pop edm"],
@@ -44,10 +54,10 @@ const SearchPage = () => {
                 data: {
                     genre: selectedGenre,
                     subgenre: selectedSubGenre,
-                    danceability: danceabilitySliderValue,
-                    energy: energySliderValue,
-                    valence: happySliderValue,
                     instrumental: instrumental,
+                    energy: energySliderValue,
+                    danceability: danceabilitySliderValue,
+                    valence: happySliderValue,
                 },
             });
 
@@ -64,16 +74,16 @@ const SearchPage = () => {
             <NavbarComponent />
 
             <Head>
-                <title>SongSurf | Search</title>
+                <title>{t("search:pageTitle")}</title>
             </Head>
 
             {showingResults && (
                 <main className="flex flex-col items-center justify-center w-full mt-12">
-                    <h1 className="text-5xl font-bold">Results</h1>
+                    <h1 className="text-5xl font-bold">{t("search:results.title")}</h1>
 
                     {songResults.length === 0 && (
                         <div className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between">
-                            <h1 className="text-lg font-bold">No results found</h1>
+                            <h1 className="text-lg font-bold">{t("search:results.noResults")}</h1>
                         </div>
                     )}
 
@@ -83,7 +93,7 @@ const SearchPage = () => {
                             setShowingResults(false);
                         }}
                     >
-                        Search Again
+                        {t("search:results.searchAgain")}
                     </button>
 
                     <div className="flex items-center justify-around w-full flex-wrap">
@@ -105,14 +115,14 @@ const SearchPage = () => {
                                                     referrerPolicy="no-referrer"
                                                     target="_blank"
                                                 >
-                                                    Open Track
+                                                    {t("search:results.openTrack")}
                                                 </Link>
                                             </div>
 
                                             <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1">
                                                 <h1 className="text-lg">Album: {song.track_album_name}</h1>
                                                 <h2 className="text-lg text-gray-400">
-                                                    Released: {song.track_album_release_date}
+                                                    {t("search:results.released")}: {song.track_album_release_date}
                                                 </h2>
 
                                                 <Link
@@ -121,13 +131,14 @@ const SearchPage = () => {
                                                     referrerPolicy="no-referrer"
                                                     target="_blank"
                                                 >
-                                                    Open Albumn
+                                                    {t("search:results.openAlbum")}
                                                 </Link>
                                             </div>
                                         </div>
 
                                         <p className="mt-4 text-gray-400">
-                                            This song is categorized as {song.playlist_subgenre}, subgenre of{" "}
+                                            {t("search:results.cat.text1")} {song.playlist_subgenre},{" "}
+                                            {t("search:results.cat.text2")}{" "}
                                             <Link
                                                 className="text-primary hover:underline"
                                                 href={`/genre/${song.playlist_genre}`}
@@ -146,10 +157,10 @@ const SearchPage = () => {
 
             {!showingResults && (
                 <main className="flex flex-col items-center justify-center w-full flex-1 mt-12">
-                    <h1 className="text-5xl font-bold">Search</h1>
+                    <h1 className="text-5xl font-bold">{t("search:search.title")}</h1>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Select a genre</h1>
+                        <h1 className="text-2xl">{t("search:search.selectGenre")}</h1>
 
                         <select
                             onChange={(event) => {
@@ -157,9 +168,7 @@ const SearchPage = () => {
                             }}
                             className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
                         >
-                            <option value="" disabled selected>
-                                Select a genre
-                            </option>
+                            <option disabled>{t("search:search.selectGenre")}</option>
                             {genreOptions.map((genre) => (
                                 <option value={genre} key={genre}>
                                     {genre.charAt(0).toUpperCase() + genre.slice(1)}
@@ -169,7 +178,7 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Select a subgenre</h1>
+                        <h1 className="text-2xl">{t("search:search.selectSubGenre")}</h1>
 
                         <select
                             onChange={(event) => {
@@ -177,9 +186,7 @@ const SearchPage = () => {
                             }}
                             className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
                         >
-                            <option value="" disabled selected>
-                                Select a subgenre
-                            </option>
+                            <option disabled>{t("search:search.selectSubGenre")}</option>
                             {subGenreOptions[selectedGenre].map((subgenre) => (
                                 <option value={subgenre} key={subgenre}>
                                     {subgenre.charAt(0).toUpperCase() + subgenre.slice(1)}
@@ -189,7 +196,9 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Song energy: {energySliderValue}%</h1>
+                        <h1 className="text-2xl">
+                            {t("search:search.songEnergy")}: {energySliderValue}%
+                        </h1>
 
                         <input
                             type="range"
@@ -210,7 +219,9 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Song Danceability: {danceabilitySliderValue}%</h1>
+                        <h1 className="text-2xl">
+                            {t("search:search.songDanceability")}: {danceabilitySliderValue}%
+                        </h1>
 
                         <input
                             type="range"
@@ -231,7 +242,9 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Song Happiness: {happySliderValue}%</h1>
+                        <h1 className="text-2xl">
+                            {t("search:search.songHappiness")}: {happySliderValue}%
+                        </h1>
 
                         <input
                             type="range"
@@ -252,19 +265,17 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-1/2 mt-8">
-                        <h1 className="text-2xl">Instrumental:</h1>
+                        <h1 className="text-2xl">{t("search:search.instrumental")}:</h1>
 
                         <select
                             onChange={(event) => {
-                                setInstrumental(event.target.value === "Yes");
+                                setInstrumental(event.target.value === "yes");
                             }}
                             className="mt-4 bg-dark-tone-3 text-white appearance-none outline-none w-full p-2 rounded-md"
                         >
-                            <option value="" disabled selected>
-                                Select an option
-                            </option>
-                            <option value="genre1">Yes</option>
-                            <option value="genre2">No</option>
+                            <option disabled>{t("search:search.selectOption")}</option>
+                            <option value="yes">{t("search:search.yes")}</option>
+                            <option value="no">{t("search:search.no")}</option>
                         </select>
                     </div>
 
@@ -272,12 +283,18 @@ const SearchPage = () => {
                         className="my-16 bg-primary text-white appearance-none outline-none w-1/2 p-2 rounded-2xl"
                         onClick={sendRequest}
                     >
-                        Search
+                        {t("search:search.search")}
                     </button>
                 </main>
             )}
         </div>
     );
 };
+
+export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale ?? "en", ["search", "components/navbar"])),
+    },
+});
 
 export default SearchPage;

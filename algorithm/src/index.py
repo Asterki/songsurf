@@ -23,7 +23,7 @@ class SongFilter:
         self.danceability_range = danceability_range
         self.energy_range = energy_range
 
-     def filter(self, valence, danceability, energy, instrumental, genre, subgenre):
+    def filter(self, valence, danceability, energy, instrumental, genre, subgenre):
         # Filter the DataFrame based on multiple criteria
         filtered_songs = self.songs[
             # Valence

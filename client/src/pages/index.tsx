@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import Link from "next/link";
 import Head from "next/head";
@@ -7,80 +10,79 @@ import NavbarComponent from "@/components/navbar";
 import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
-const Home = () => {
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+
+interface PageProps {}
+
+const Home = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const router = useRouter();
+    const { t } = useTranslation(["index", "components/navbar"]);
+
     return (
         <div className={`${montserrat} bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}>
             <NavbarComponent />
 
             <Head>
-                <title>SongSurf</title>
+                <title>{t("index:pageTitle")}</title>
             </Head>
 
             <header className="text-center p-16">
-                <h1 className="text-[60px] font-bold">SongSurf</h1>
-                <p>
-                    Dive into a sea of personalized playlists and discover a harmonious journey through your favorite
-                    genres and artists.
-                </p>
+                <h1 className="text-[60px] font-bold">{t("index:pageTitle")}</h1>
+                <p>{t("index:pageDesc")}</p>
             </header>
 
             <main className="text-center">
                 <Link
-                    href="/search"
+                    href={`/${router.locale}/search`}
                     className="w-1/12 py-4 px-8 rounded-2xl bg-primary transition-all text-white font-bold text-[20px]"
                 >
-                    Get Started
+                    {t("index:getStarted")}
                 </Link>
 
                 <section className="text-center p-16">
-                    <h2 className="text-[40px] font-bold">How it works</h2>
-                    <p>
-                        SongSurf is a web app that allows you to discover new music a huge database of songs from
-                        Spotify.
-                    </p>
-                    <p>
-                        You can add filters to your likings to find the perfect song for you. You can filter by genre,
-                        year, and popularity.
-                    </p>
-                    <p>
-                        It uses artificial intelligence to find songs that matches with the filters you have selected.
-                    </p>
+                    <h2 className="text-[40px] font-bold">{t("index:sections.howWorks.title")}</h2>
+                    <p>{t("index:sections.howWorks.text1")}</p>
+                    <p>{t("index:sections.howWorks.text2")}</p>
+                    <p>{t("index:sections.howWorks.text3")}</p>
                 </section>
 
                 <section className="text-center p-16">
-                    <h2 className="text-[40px] font-bold">How to use</h2>
-                    <p>To do this, you first have to head to the search page, then add filters to your likings.</p>
-                    <p>Once you have added filters, click on the search button to search for songs.</p>
-                    <p>SongSurf will do the rest</p>
+                    <h2 className="text-[40px] font-bold">{t("index:sections.howToUse.title")}</h2>
+                    <p>{t("index:sections.howToUse.text1")}</p>
+                    <p>{t("index:sections.howToUse.text2")}</p>
+                    <p>{t("index:sections.howToUse.text3")}</p>
                 </section>
 
                 <section className="text-center p-16">
-                    <h2 className="text-[40px] font-bold">Privacy</h2>
-                    <p>
-                        SongSurf does not store any of your data. It only uses the data you provide to search for songs.
-                    </p>
-                    <p>After it was used to search for songs, it is deleted from our server.</p>
-                    <p>In fact, you can check the source code yourself.</p>
+                    <h2 className="text-[40px] font-bold">{t("index:sections.privacy.title")}</h2>
+                    <p>{t("index:sections.privacy.text1")}</p>
+                    <p>{t("index:sections.privacy.text2")}</p>
+                    <p>{t("index:sections.privacy.text3")}</p>
                 </section>
 
                 <section className="text-center p-16">
-                    <h2 className="text-[40px] font-bold">Open Source</h2>
+                    <h2 className="text-[40px] font-bold">{t("index:sections.openSource.title")}</h2>
                     <p>
-                        SongSurf is open source. You can view the source code{" "}
+                        {t("index:sections.openSource.text1")}{" "}
                         <a
                             target="_blank"
                             referrerPolicy="no-referrer"
                             href="https://github.com/Asterki/flashet"
                             className="text-primary hover:underline"
                         >
-                            here
+                            {t("index:sections.openSource.text2")}
                         </a>
-                        .
                     </p>
                 </section>
             </main>
         </div>
     );
 };
+
+export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale ?? "en", ["index", "components/navbar"])),
+    },
+});
 
 export default Home;
