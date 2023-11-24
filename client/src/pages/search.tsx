@@ -102,7 +102,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                                 return (
                                     <div
                                         key={song.track_id}
-                                        className="bg-dark-tone-3 p-8 rounded-xl my-8 w-5/12 flex flex-col items-center justify-between"
+                                        className="bg-dark-tone-3 p-8 rounded-xl my-8 md:w-5/12 w-11/12 flex flex-col items-center justify-between"
                                     >
                                         <div className="flex items-center justify-between w-full">
                                             <div className="flex flex-col items-center justify-center p-2 w-1/2 flex-1 text-center">
@@ -159,7 +159,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                 <main className="flex flex-col items-center justify-center w-full flex-1 mt-12">
                     <h1 className="text-5xl font-bold">{t("search:search.title")}</h1>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">{t("search:search.selectGenre")}</h1>
 
                         <select
@@ -177,7 +177,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         </select>
                     </div>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">{t("search:search.selectSubGenre")}</h1>
 
                         <select
@@ -195,7 +195,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         </select>
                     </div>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">
                             {t("search:search.songEnergy")}: {energySliderValue}%
                         </h1>
@@ -218,7 +218,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         />
                     </div>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">
                             {t("search:search.songDanceability")}: {danceabilitySliderValue}%
                         </h1>
@@ -241,7 +241,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         />
                     </div>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">
                             {t("search:search.songHappiness")}: {happySliderValue}%
                         </h1>
@@ -264,7 +264,7 @@ const SearchPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         />
                     </div>
 
-                    <div className="w-1/2 mt-8">
+                    <div className="md:w-1/2 w-11/12 mt-8">
                         <h1 className="text-2xl">{t("search:search.instrumental")}:</h1>
 
                         <select
