@@ -1,10 +1,19 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import pandas as pd
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+env_path = Path('.', '.env')
+load_dotenv(dotenv_path=env_path)
 
 # Create the API endpoint
 app = Flask(__name__)
 cors = CORS(app)
+
 
 # Load the song database
 try:
@@ -14,6 +23,11 @@ try:
 except Exception as e:
     print(f"Error loading data: {e}")
     songs = pd.DataFrame()
+
+
+#Authentication - without user
+client_credentials_manager = SpotifyClientCredentials(client_id=os.getenv("CLIENT_ID"), client_secret=os.getenv("CLIENT_SECRET"))
+sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 
 
 class SongFilter:
@@ -52,6 +66,25 @@ class SongFilter:
 song_filter = SongFilter(valence_range=0.1, danceability_range=0.1, energy_range=0.1, songs=songs)
 
 
+@app.route("/api/get-song-info", methods=["POST"], strict_slashes=False, endpoint="search")
+@cross_origin()
+def search():
+    # Check the request values
+    data = request.get_json(force=True)
+    if not data:
+        return jsonify({"error": "Empty request"}), 400
+
+    required_keys = ["song_url"]
+    if not all(key in data for key in required_keys):
+        return jsonify({"error": "Missing required key(s) in request"}), 400
+
+
+    song_info = sp.audio_features(data["song_url"])[0]
+
+    # Get the songs and return them
+    return jsonify(song_info)
+
+
 @app.route("/api/search", methods=["POST"], strict_slashes=False, endpoint="search")
 @cross_origin()
 def search():
@@ -80,4 +113,4 @@ def search():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
