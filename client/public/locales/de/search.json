@@ -1,0 +1,28 @@
+{
+    "pageTitle": "SongSurf | Suche",
+    "results": {
+        "title": "Ergebnisse",
+        "noResults": "Keine Ergebnisse gefunden",
+        "searchAgain": "Erneut suchen",
+        "openTrack": "Track öffnen",
+        "released": "Veröffentlicht",
+        "openAlbum": "Album öffnen",
+        "cat": {
+            "text1": "Dieser Song ist kategorisiert als",
+            "text2": "Subgenre von"
+        }
+    },
+    "search": {
+        "title": "Suche",
+        "selectGenre": "Genre auswählen",
+        "selectSubGenre": "Subgenre auswählen",
+        "songEnergy": "Song-Energie",
+        "songDanceability": "Song-Tanzbarkeit",
+        "songHappiness": "Song-Glück",
+        "instrumental": "Instrumental",
+        "selectOption": "Option auswählen",
+        "yes": "Ja",
+        "no": "Nein",
+        "search": "Suche"
+    }
+}

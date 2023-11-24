@@ -1,0 +1,33 @@
+{
+    "pageTitle": "SongSurf",
+    "pageDesc": "Tauchen Sie ein in eine Welt personalisierter Playlists und entdecken Sie eine harmonische Reise durch Ihre Lieblingsgenres und Künstler.",
+
+    "getStarted": "Loslegen",
+
+    "sections": {
+        "howWorks": {
+            "title": "Wie es funktioniert",
+            "desc": "SongSurf ist eine Webanwendung, die es Ihnen ermöglicht, eine personalisierte Playlist basierend auf Ihren Lieblingskünstlern und Genres zu erstellen. Sie verwendet die Spotify API, um Ihre Lieblingskünstler und Genres abzurufen, und nutzt dann das Spotify Web Playback SDK, um die Songs abzuspielen. Sie verwendet auch die Spotify Web API, um die Songs abzurufen und die Playlist zu erstellen.",
+            "text1": "SongSurf ist eine Webanwendung, die es Ihnen ermöglicht, neue Musik in einer riesigen Datenbank von Songs von Spotify zu entdecken.",
+            "text2": "Sie können Filter nach Ihren Vorlieben hinzufügen, um das perfekte Lied für Sie zu finden. Sie können nach Genre, Jahr und Popularität filtern.",
+            "text3": "Sie verwendet künstliche Intelligenz, um Songs zu finden, die zu den von Ihnen ausgewählten Filtern passen."
+        },
+        "howToUse": {
+            "title": "Wie man es benutzt",
+            "text1": "Um dies zu tun, müssen Sie zunächst zur Suchseite gehen und dann Filter nach Ihren Vorlieben hinzufügen.",
+            "text2": "Sobald Sie Filter hinzugefügt haben, klicken Sie auf die Suchschaltfläche, um nach Songs zu suchen.",
+            "text3": "SongSurf erledigt den Rest."
+        },
+        "privacy": {
+            "title": "Datenschutz",
+            "text1": "SongSurf speichert keine Ihrer Daten. Es verwendet nur die Daten, die Sie bereitstellen, um nach Songs zu suchen.",
+            "text2": "Nachdem es zum Suchen von Songs verwendet wurde, wird es von unserem Server gelöscht.",
+            "text3": "Tatsächlich können Sie den Quellcode selbst überprüfen."
+        },
+        "openSource": {
+            "title": "Open Source",
+            "text1": "SongSurf ist Open Source. Sie können den Quellcode",
+            "text2": "hier anzeigen."
+        }
+    }
+}
