@@ -56,46 +56,38 @@ class SongFilter:
         ]
 
         return filtered_songs
-
-
 song_filter = SongFilter(valence_range=0.1, danceability_range=0.1, energy_range=0.1, songs=songs)
 
 
-@app.route("/api/get-song-info", methods=["POST"], strict_slashes=False, endpoint="get_song_info")
-@cross_origin()
-def get_song_info():
-    # Check the request values
-    data = request.get_json(force=True)
-    if not data:
-        return jsonify({"error": "Empty request"}), 400
+def get_song_info(song_name):
+    try:
+        result = sp.search(song_name, limit=1, type="track")['tracks']['items'][0]
+        if not result:
+            return None
 
-    required_keys = ["song_name"]
-    if not all(key in data for key in required_keys):
-        return jsonify({"error": "Missing required key(s) in request"}), 400
+        result["genres"] = sp.artist(result["artists"][0]["id"])["genres"]
+        audio_features = sp.audio_features(result['id'])[0]
 
-    result = sp.search(data["song_name"], limit=1, type="track")
-    track = result['tracks']['items'][0]
-    audio_features = sp.audio_features(track['id'])[0]
+        return result, audio_features
+    except Exception as e:
+        print(f"Error getting song info: {e}")
+        return None
 
-    genres = sp.artist(track["artists"][0]["external_urls"]["spotify"])["genres"]
-    supportedGenres = ["edm", "latin", "pop", "rock", "rap", "r&b"]
+def get_similar_songs(song_id, artist_id):
+    try:
+        similar = []
+        for track in sp.recommendations(seed_tracks=[song_id], limit=50)["tracks"]:
+            if track["artists"][0]["id"] != artist_id:
+                track["genre"] = sp.artist(track["artists"][0]["id"])["genres"]
+                similar.append(track)
 
-    genre = None
-    for g in genres:
-        for s in supportedGenres:
-            if s in g:
-                genre = s
-                break
+        return similar
+    except Exception as e:
+        print(f"Error getting similar songs: {e}")
+        return []
+        
 
-
-    # Get the songs and return them
-    return jsonify({
-        "audio_features": audio_features,
-        "song_data": track,
-        "genre": genre if genre else "other"
-    })
-
-
+# API Endpoints
 @app.route("/api/search", methods=["POST"], strict_slashes=False, endpoint="search")
 @cross_origin()
 def search():
@@ -123,9 +115,31 @@ def search():
 
     # Get the songs and return them
     filtered_songs = song_filter.filter(**filter_params)
-    filtered_songs = filtered_songs.sample(n=100)
+    filtered_songs = filtered_songs[:100]
 
     return jsonify(filtered_songs.to_dict(orient="records"))
+
+
+@app.route("/api/get-song-info", methods=["POST"], strict_slashes=False, endpoint="song_info")
+@cross_origin()
+def song_info():
+    valid, error, status = validate_request(request.get_json(force=True))
+    if not valid:
+        return error, status
+
+    song_name = request.get_json(force=True)["song_name"]
+    song_data, audio_features = get_song_info(song_name)
+    if not song_data:
+        return jsonify({})
+
+    similar_songs = get_similar_songs(song_data['id'], song_data["artists"][0]["id"])
+
+    return jsonify({
+        "song_data": song_data,
+        "audio_features": audio_features,
+        "similar": similar_songs
+    })
+
 
 
 if __name__ == "__main__":
