@@ -3,7 +3,13 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const NavbarComponent = () => {
+import { TFunction } from "next-i18next";
+
+interface ComponentProps {
+    t: TFunction;
+}
+
+const NavbarComponent: React.FC<ComponentProps> = (props) => {
     return (
         <div className="flex items-center justify-between px-6 md:px-24 py-6 bg-dark-tone-3 drop-shadow-md sticky top-0">
             <div className="flex items-center space-x-8">
@@ -19,7 +25,7 @@ const NavbarComponent = () => {
                     href="https://github.com/Asterki/songsurf"
                     className="transition-all hover:text-primary hover:underline"
                 >
-                    Open Source
+                    {props.t("components/navbar:openSource")}
                 </Link>
                 <Link
                     target="_blank"
@@ -27,7 +33,7 @@ const NavbarComponent = () => {
                     href="https://www.asterki.com"
                     className="transition-all hover:text-primary hover:underline"
                 >
-                    Created By Asterki
+                    {props.t("components/navbar:createdBy")}
                 </Link>
             </div>
         </div>

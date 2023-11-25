@@ -20,7 +20,7 @@ const Home = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     return (
         <div className={`${montserrat} bg-gradient-to-br from-dark-tone-1 to-dark-tone-2 min-h-screen text-white`}>
-            <NavbarComponent />
+            <NavbarComponent t={t} />
 
             <Head>
                 <title>{t("index:pageTitle")}</title>
