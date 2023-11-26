@@ -32,12 +32,21 @@ const Home = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
             </header>
 
             <main className="text-center">
-                <Link
-                    href={`/${router.locale}/search`}
-                    className="w-1/12 py-4 px-8 rounded-2xl bg-primary transition-all text-white font-bold text-[20px]"
-                >
-                    {t("index:getStarted")}
-                </Link>
+                <div className="flex flex-col items-center w-full justify-center gap-2">
+                    <Link
+                        href={`/${router.locale}/by-features`}
+                        className="w-1/2 py-4 px-8 rounded-2xl bg-primary transition-all text-white font-bold text-[20px]"
+                    >
+                        {t("index:byFeatures")}
+                    </Link>
+
+                    <Link
+                        href={`/${router.locale}/by-song`}
+                        className="w-1/2 py-4 px-8 rounded-2xl bg-primary transition-all text-white font-bold text-[20px]"
+                    >
+                        {t("index:bySong")}
+                    </Link>
+                </div>
 
                 <section className="text-center p-16">
                     <h2 className="text-[40px] font-bold">{t("index:sections.howWorks.title")}</h2>
