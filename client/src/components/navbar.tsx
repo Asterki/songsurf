@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { TFunction } from "next-i18next";
 
@@ -10,13 +11,18 @@ interface ComponentProps {
 }
 
 const NavbarComponent: React.FC<ComponentProps> = (props) => {
+    const router = useRouter();
+
     return (
         <div className="flex items-center justify-between px-6 md:px-24 py-6 bg-dark-tone-3 drop-shadow-md sticky top-0">
-            <div className="flex items-center space-x-8">
+            <div
+                className="flex items-center space-x-4 cursor-pointer"
+                onClick={() => {
+                    router.push(`${router.locale}/`);
+                }}
+            >
                 <Image src="/icons/logo.svg" alt="SongSurf Logo" width={40} height={40} />
-                <Link href="/" className="text-[20px] font-bold transition-all hover:text-primary hidden md:block">
-                    SongSurf
-                </Link>
+                <a className="text-[20px] font-bold transition-all hover:text-primary hidden md:block">SongSurf</a>
             </div>
             <div className="flex items-center md:space-x-8 space-x-4">
                 <Link
